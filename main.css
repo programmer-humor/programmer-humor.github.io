@@ -1,0 +1,256 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #121212;
+    color: #e0e0e0;
+    margin: 0;
+    padding: 0;
+}
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.feed-item {
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(255, 255, 255, 0.1);
+    margin-bottom: 20px;
+    overflow: hidden;
+    padding: 20px;
+}
+
+.feed-item .title {
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.feed-item .description {
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.feed-item img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+.feed-item .meta {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 10px;
+}
+
+.feed-item h2 {
+    margin-top: 0;
+    color: white;
+}
+.feed-item p {
+    color: #b0b0b0;
+}
+
+.swiper {
+    width: 100%;
+    height: auto; /* 고정 높이 제거 */
+    /* max-height: 500px; 최대 높이 설정 */
+    margin-bottom: 15px;
+}
+
+.swiper-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1e1e1e; /* 배경색 추가 */
+}
+
+.swiper-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* cover에서 contain으로 변경 */
+    max-height: 500px; /* 최대 높이 설정 */
+}
+
+/* Header 스타일 */
+.main-header {
+    background-color: #1e1e1e;
+    padding: 20px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.main-header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px; /* 컨테이너의 최대 너비를 늘립니다 */
+    margin: 0 auto; /* 중앙 정렬을 위해 추가 */
+    padding: 0 20px; /* 양쪽에 패딩을 추가합니다 */
+}
+
+.main-header h1 {
+    margin: 0;
+    font-size: 1.5em;
+    flex-grow: 1; /* 로고가 가능한 많은 공간을 차지하도록 합니다 */
+}
+
+.main-header nav {
+    margin-left: 40px; /* 네비게이션과 로고 사이의 간격을 늘립니다 */
+}
+
+.main-header nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+.main-header nav ul li {
+    margin-left: 30px; /* 네비게이션 항목 사이의 간격을 늘립니다 */
+}
+
+.main-header nav ul li a {
+    color: #e0e0e0;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.main-header nav ul li a:hover {
+    color: #ffffff;
+}
+
+/* Footer 스타일 수정 */
+.main-footer {
+    background-color: #1e1e1e;
+    color: #b0b0b0;
+    padding: 20px 0;
+    margin-top: 40px;
+}
+
+.main-footer .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px; /* 헤더와 동일한 최대 너비 설정 */
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.main-footer p {
+    margin: 0;
+    flex-grow: 1; /* 저작권 정보가 가능한 많은 공간을 차지하도록 합니다 */
+}
+
+.social-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    margin-left: 40px; /* 헤더와 동일한 간격 설정 */
+}
+
+.social-links li {
+    margin-left: 0; /* 기존 마진 제거 */
+}
+
+.social-links a {
+    color: #b0b0b0;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+    color: #ffffff;
+}
+
+/* 반응형 디자인을 위한 미디어 쿼리 */
+@media (max-width: 600px) {
+    .main-header .container,
+    .main-footer .container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .main-header nav ul {
+        margin-top: 15px;
+    }
+
+    .main-header nav ul li {
+        margin: 0 10px;
+    }
+
+    .social-links {
+        margin-top: 15px;
+    }
+
+    .social-links li {
+        margin: 0 10px;
+    }
+}
+
+/* 반응형 디자인을 위한 미디어 쿼리 수정 */
+@media (max-width: 768px) {
+    .main-header .container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .main-header nav {
+        margin-left: 0;
+        margin-top: 15px;
+        width: 100%;
+    }
+
+    .main-header nav ul {
+        justify-content: space-between;
+    }
+
+    .main-header nav ul li {
+        margin-left: 0;
+    }
+
+    .main-footer .container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .social-links {
+        margin-left: 0;
+        margin-top: 15px;
+        width: 100%;
+    }
+}
+
+.end-message {
+    background-color: #1e1e1e;
+    color: #b0b0b0;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 20px;
+    box-shadow: 0 1px 3px rgba(255, 255, 255, 0.1);
+}
+
+.loading-indicator {
+    text-align: center;
+    padding: 20px;
+    color: #b0b0b0;
+}
+
+.spinner {
+    border: 4px solid #3498db;
+    border-top: 4px solid #1e1e1e;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
