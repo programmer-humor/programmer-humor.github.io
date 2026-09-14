@@ -149,3 +149,7 @@ fabric.properties
 .idea/**/azureSettings.xml
 
 .vscode
+# 프리렌더 산출물 (GitHub Actions 가 생성·배포)
+dist/
+
+.DS_Store

@@ -1,5 +1,12 @@
 {
+  "name": "programmer-humor-feed",
+  "private": true,
   "scripts": {
-    "build": "webpack --mode production"
+    "build": "node scripts/prerender.mjs",
+    "build:local": "node scripts/prerender.mjs --local",
+    "preview": "python3 -m http.server 4173 -d dist"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }

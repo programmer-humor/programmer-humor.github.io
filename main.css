@@ -97,7 +97,7 @@ body {
     padding: 0 20px; /* 양쪽에 패딩을 추가합니다 */
 }
 
-.main-header h1 {
+.main-header .site-title {
     margin: 0;
     font-size: 1.5em;
     flex-grow: 1; /* 로고가 가능한 많은 공간을 차지하도록 합니다 */
@@ -295,4 +295,99 @@ body {
     font-weight: bold;
     cursor: pointer;
     z-index: 1001;
+}
+/* ── SEO 개편 (2026-09) ─────────────────────────────── */
+.main-header .site-title {
+    font-weight: bold;
+}
+.main-header .site-title a {
+    color: inherit;
+    text-decoration: none;
+}
+.feed-item h1 {
+    margin-top: 0;
+    color: white;
+    font-size: 1.4em;
+}
+.feed-item h2 a,
+.feed-item h1 a {
+    color: inherit;
+    text-decoration: none;
+}
+.feed-item h2 a:hover {
+    text-decoration: underline;
+}
+/* 이미지 로드 전 높이를 확보해 CLS 를 줄인다 (원본 크기를 알 수 없어 min-height 로 대체) */
+.swiper {
+    min-height: 200px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 24px 0;
+}
+.pagination a,
+.pagination span {
+    padding: 8px 12px;
+    border-radius: 6px;
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    text-decoration: none;
+}
+.pagination a:hover {
+    color: #ffffff;
+    background-color: #2a2a2a;
+}
+.pagination .current {
+    background-color: #3498db;
+    color: #ffffff;
+}
+.pagination .gap {
+    background: none;
+    color: #666;
+}
+
+.detail-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 24px 0 8px;
+}
+.detail-nav a {
+    color: #b0b0b0;
+    text-decoration: none;
+    max-width: 48%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.detail-nav a:hover {
+    color: #ffffff;
+}
+.back-home a {
+    color: #b0b0b0;
+}
+
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 20px;
+}
+.feed-item .tag-list {
+    margin: 12px 0 0;
+}
+.tag-list a {
+    background-color: #1e1e1e;
+    color: #b0b0b0;
+    padding: 4px 10px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-size: 0.9em;
+}
+.tag-list a:hover {
+    color: #ffffff;
 }

@@ -10,31 +10,24 @@
     <!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Programmer Humor</title>
 
-    <!-- ko meta -->
-    <meta name="description" content="개발자를 위한 위한 유머 피드. 코딩과 관련된 재미있는 밈, 유머 이미지를 즐겨보세요." lang="ko">
-    <meta property="og:title" content="프로그래머 유머 피드" lang="ko">
-    <meta property="og:description" content="개발자를 위한 위한 유머 피드. 코딩과 관련된 재미있는 밈, 유머 이미지를 즐겨보세요." lang="ko">
-    <!-- eng meta -->
-    <meta name="description" content="Humor feed for programmers. Enjoy funny memes, jokes, and images related to coding." lang="en">
-    <meta property="og:title" content="Programmer Humor Feed" lang="en">
-    <meta property="og:description" content="Humor feed for programmers. Enjoy funny memes, jokes, and images related to coding." lang="en">
-    <!-- common -->
-    <meta property="og:site_name" content="ProgrammerHumor.io">
+    <!-- 아래 head 태그들은 scripts/prerender.mjs 가 페이지별로 치환한다. 형식을 바꾸면 스크립트도 함께 수정 -->
+    <title>개발자 유머 · 프로그래머 밈 모음 | Programmer Humor Feed</title>
+    <link rel="canonical" href="https://programmer-humor.github.io/">
+    <meta name="description" content="개발자를 위한 유머 피드. 코딩과 관련된 재미있는 밈과 짤방을 모았습니다.">
+    <meta property="og:site_name" content="Programmer Humor Feed">
     <meta property="og:type" content="website">
+    <meta property="og:title" content="개발자 유머 · 프로그래머 밈 모음">
+    <meta property="og:description" content="개발자를 위한 유머 피드. 코딩과 관련된 재미있는 밈과 짤방을 모았습니다.">
     <meta property="og:url" content="https://programmer-humor.github.io/">
     <meta property="og:image" content="https://programmer-humor.github.io/static/cover.jpg">
-    <!-- define lang -->
-    <!-- 
-    <link rel="alternate" hreflang="ko" href="https://your-website-url.com/ko">
-    <link rel="alternate" hreflang="en" href="https://your-website-url.com/en">
-    <link rel="alternate" hreflang="x-default" href="https://your-website-url.com"> 
-    -->
+    <meta name="twitter:card" content="summary_large_image">
+    <!-- prerender:head -->
 
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
-    <link rel="stylesheet" href="main.css">
-    <link rel="icon" href="https://programmer-humor.github.io/static/favicon.svg">
+    <link rel="preconnect" href="https://raw.githubusercontent.com">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@11/swiper-bundle.min.css">
+    <link rel="stylesheet" href="/main.css">
+    <link rel="icon" href="/static/favicon.svg">
     <meta name="google-site-verification" content="wes0WTHQlQ8x1vw5lgwz_BZ7azxVSIIFPxEDLPTYrho" />
     <meta name="google-adsense-account" content="ca-pub-4820790011788742" />
     <!-- Google tag (gtag.js) -->
@@ -50,44 +43,36 @@
 <body>
     <header class="main-header">
         <div class="container">
-            <h1>😀 Programmer Humor Feed</h1>
-            <!-- 
-            <nav>
-                <ul>
-                    <li><a href="#home">홈</a></li>
-                    <li><a href="#about">소개</a></li>
-                    <li><a href="#contact">문의</a></li>
-                </ul>
-            </nav> 
-            -->
+            <p class="site-title"><a href="/">😀 Programmer Humor Feed</a></p>
         </div>
     </header>
 
     <main class="container">
-        <div id="feed-container"></div>
+        <!-- prerender:before-feed -->
+        <div id="feed-container"><!-- prerender:feed --></div>
+        <!-- prerender:after-feed -->
         <div id="loading-indicator" class="loading-indicator" style="display: none;">
             <div class="spinner"></div>
             <p>Loading more humor...</p>
         </div>
     </main>
 
-    <!-- 이미지 모달 추가 -->
     <div id="imageModal" class="modal">
         <span class="modal-close">&times;</span>
-        <img class="modal-content" id="modalImage">
+        <img class="modal-content" id="modalImage" alt="">
     </div>
 
     <footer class="main-footer">
         <div class="container">
-            <p>&copy; 2024 Breave People. All rights reserved.</p>
+            <p>&copy; 2024 Brave People. All rights reserved.</p>
             <ul class="social-links">
-                <li><a href="https://github.com/brave-people" target="_blank">GitHub</a></li>
+                <li><a href="https://github.com/brave-people" target="_blank" rel="noopener">GitHub</a></li>
             </ul>
         </div>
     </footer>
 
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <script src="app.js"></script>
+    <script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
+    <script src="/app.js"></script>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MHSRHDHF"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
