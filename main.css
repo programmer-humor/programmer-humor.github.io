@@ -98,33 +98,52 @@ a {
 }
 
 .container {
-    max-width: 600px;
+    max-width: 800px;
     margin: 0 auto;
     padding: var(--space-5);
 }
 
 /* ── 헤더: 민트 간판 (시그니처) ─────────────────────── */
+/* 민트 풀블리드 위에 검정 윤곽선 흰 아크릴 판 — 길거리 간판 그 자체 */
 .main-header {
     background-color: var(--primary);
     color: var(--fg-1);
+    border-bottom: 2px solid var(--border-strong);
 }
 
 .main-header .container {
     display: flex;
+    justify-content: center;
+    padding-top: var(--space-7);
+    padding-bottom: calc(var(--space-7) + 6px); /* sticker 그림자 6px 여유 */
+}
+
+.signboard {
+    display: inline-flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    min-height: 88px;
-    padding-top: var(--space-6);
-    padding-bottom: var(--space-6);
+    gap: var(--space-1);
+    padding: var(--space-4) var(--space-7);
+    background-color: var(--bg-surface);
+    border: 2px solid var(--border-strong);
+    border-radius: var(--r-md);
+    box-shadow: var(--shadow-sticker);
+    transform: rotate(-1deg); /* 손으로 걸어둔 간판의 살짝 기운 느낌 */
+    transition: transform var(--dur-base) var(--ease-out);
+}
+
+.signboard:hover {
+    transform: rotate(0deg);
 }
 
 .main-header .site-title {
     margin: 0;
     font-family: var(--font-display);
     font-weight: 400;
-    font-size: 32px;
+    font-size: 40px;
     line-height: 1.05;
     letter-spacing: -0.01em;
+    text-align: center;
 }
 
 .main-header .site-title a {
@@ -135,6 +154,14 @@ a {
 
 .main-header .site-title a:active {
     transform: scale(0.98);
+}
+
+.site-tagline {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fg-2);
+    letter-spacing: 0.02em;
 }
 
 /* ── 피드 카드: 보더 없는 흰 표면 ────────────────────── */
@@ -206,7 +233,7 @@ a {
     display: block;
     width: 100%;
     height: 100%;
-    max-height: 560px;
+    max-height: min(880px, 85vh);
     object-fit: contain;
     cursor: zoom-in;
     transition: opacity var(--dur-base) var(--ease-out);
@@ -292,7 +319,6 @@ a {
 /* ── 알약 버튼 (공통) ────────────────────────────────── */
 .pagination a,
 .pagination span,
-.detail-nav a,
 .back-home a {
     display: inline-flex;
     align-items: center;
@@ -307,7 +333,6 @@ a {
 
 /* ghost: 투명 + 1.5px 보더 */
 .pagination a,
-.detail-nav a,
 .back-home a {
     background-color: transparent;
     border: 1.5px solid var(--border-2);
@@ -315,13 +340,11 @@ a {
 }
 
 .pagination a:hover,
-.detail-nav a:hover,
 .back-home a:hover {
     border-color: var(--border-strong);
 }
 
 .pagination a:active,
-.detail-nav a:active,
 .back-home a:active {
     transform: scale(0.98);
 }
@@ -350,22 +373,66 @@ a {
 
 /* ── 상세 이전/다음 ───────────────────────────────── */
 .detail-nav {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: var(--space-3);
     margin: var(--space-7) 0 var(--space-3);
 }
 
-.detail-nav a {
-    max-width: 48%;
+.detail-nav__item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    min-width: 0;
+    padding: var(--space-3) var(--space-4);
+    background-color: var(--bg-surface);
+    border: 1.5px solid var(--border-2);
+    border-radius: var(--r-md);
+    transition: border-color var(--dur-base) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+
+.detail-nav__item--next {
+    text-align: right;
+    align-items: flex-end;
+}
+
+a.detail-nav__item:hover {
+    border-color: var(--border-strong);
+}
+
+a.detail-nav__item:active {
+    transform: scale(0.98);
+}
+
+.detail-nav__item.is-empty {
+    background-color: transparent;
+    border-style: dashed;
+    color: var(--fg-4);
+}
+
+.detail-nav__label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--fg-3);
+}
+
+.detail-nav__item.is-empty .detail-nav__label {
+    color: var(--fg-4);
+}
+
+.detail-nav__title {
+    width: 100%;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--fg-1);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    justify-content: flex-start;
 }
 
-.detail-nav span {
-    flex: 1;
+.detail-nav__item.is-empty .detail-nav__title {
+    color: var(--fg-4);
+    font-weight: 500;
 }
 
 .back-home {
@@ -500,13 +567,20 @@ a {
     }
 
     .main-header .container {
-        min-height: 72px;
         padding-top: var(--space-5);
-        padding-bottom: var(--space-5);
+        padding-bottom: calc(var(--space-5) + 6px);
+    }
+
+    .signboard {
+        padding: var(--space-3) var(--space-5);
     }
 
     .main-header .site-title {
-        font-size: 26px;
+        font-size: 28px;
+    }
+
+    .site-tagline {
+        font-size: 12px;
     }
 
     .feed-item {
@@ -522,11 +596,12 @@ a {
         font-size: 28px;
     }
 
-    .detail-nav a {
-        max-width: 100%;
+    .detail-nav {
+        grid-template-columns: 1fr;
     }
 
-    .detail-nav {
-        flex-direction: column;
+    .detail-nav__item--next {
+        text-align: left;
+        align-items: flex-start;
     }
 }

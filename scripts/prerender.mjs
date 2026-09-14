@@ -252,17 +252,31 @@ async function renderDetails(tpl, indexable) {
     const paths = [];
     for (let i = 0; i < indexable.length; i++) {
         const it = indexable[i];
-        const newer = indexable[i - 1];   // 최신순 정렬이므로 앞이 더 새 항목
+        // 최신순 배열이므로 i-1 이 더 새 글. 블로그 관례대로 이전글=오래된 글, 다음글=새 글
+        const newer = indexable[i - 1];
         const older = indexable[i + 1];
         const pathname = detailPath(it);
         const url = `${SITE.origin}${pathname}`;
         const description = it.content || `${it.title} — 개발자 유머 · 프로그래머 밈`;
 
-        const nav = (newer || older) ? `
+        const navItem = (target, dir) => {
+            const label = dir === 'prev' ? '‹ 이전 유머' : '다음 유머 ›';
+            if (!target) {
+                return `<span class="detail-nav__item detail-nav__item--${dir} is-empty" aria-disabled="true">
+                <span class="detail-nav__label">${label}</span>
+                <span class="detail-nav__title">${dir === 'prev' ? '첫 유머입니다' : '가장 최신 유머입니다'}</span>
+            </span>`;
+            }
+            return `<a class="detail-nav__item detail-nav__item--${dir}" href="${detailPath(target)}" rel="${dir}">
+                <span class="detail-nav__label">${label}</span>
+                <span class="detail-nav__title">${esc(target.title)}</span>
+            </a>`;
+        };
+        const nav = `
         <nav class="detail-nav" aria-label="이전/다음 유머">
-            ${newer ? `<a href="${detailPath(newer)}" rel="prev">‹ ${esc(newer.title)}</a>` : '<span></span>'}
-            ${older ? `<a href="${detailPath(older)}" rel="next">${esc(older.title)} ›</a>` : '<span></span>'}
-        </nav>` : '';
+            ${navItem(older, 'prev')}
+            ${navItem(newer, 'next')}
+        </nav>`;
 
         await emit(pathname, renderPage(tpl, {
             path: pathname,
