@@ -101,7 +101,7 @@ const slugify = tag => tag.toLowerCase().replace(/\s+/g, '-').replace(/[^\p{L}\p
 const detailPath = item => `/humor/${item.id}/`;
 const tagPath = tag => `/tag/${slugify(tag)}/`;
 
-function articleHTML(item, { eager = false, lcp = false, heading = 'h2', link = true } = {}) {
+function articleHTML(item, { eager = false, lcp = false, heading = 'h2', link = true, detail = false } = {}) {
     const alt = item.title || '개발자 유머 이미지';
     const slides = item.images.map((src, i) => {
         const suffix = item.images.length > 1 ? ` (${i + 1}/${item.images.length})` : '';
@@ -123,7 +123,7 @@ function articleHTML(item, { eager = false, lcp = false, heading = 'h2', link = 
         : '';
 
     return `
-        <article class="feed-item" data-humor-id="${item.id}">${title}${body}
+        <article class="feed-item${detail ? ' feed-item--detail' : ''}" data-humor-id="${item.id}">${title}${body}
             <div class="swiper">
                 <div class="swiper-wrapper">${slides}
                 </div>
@@ -142,7 +142,7 @@ function paginationHTML(current, total, pathOf) {
     const sorted = [...pages].sort((a, b) => a - b);
 
     const parts = [];
-    if (current > 1) parts.push(`<a href="${pathOf(current - 1)}" rel="prev">← 이전</a>`);
+    if (current > 1) parts.push(`<a href="${pathOf(current - 1)}" rel="prev">‹ 이전</a>`);
     let last = 0;
     for (const p of sorted) {
         if (p - last > 1) parts.push('<span class="gap">…</span>');
@@ -151,7 +151,7 @@ function paginationHTML(current, total, pathOf) {
             : `<a href="${pathOf(p)}">${p}</a>`);
         last = p;
     }
-    if (current < total) parts.push(`<a href="${pathOf(current + 1)}" rel="next">다음 →</a>`);
+    if (current < total) parts.push(`<a href="${pathOf(current + 1)}" rel="next">다음 ›</a>`);
     return `\n        <nav class="pagination" aria-label="페이지">${parts.join('')}</nav>`;
 }
 
@@ -260,8 +260,8 @@ async function renderDetails(tpl, indexable) {
 
         const nav = (newer || older) ? `
         <nav class="detail-nav" aria-label="이전/다음 유머">
-            ${newer ? `<a href="${detailPath(newer)}" rel="prev">← ${esc(newer.title)}</a>` : '<span></span>'}
-            ${older ? `<a href="${detailPath(older)}" rel="next">${esc(older.title)} →</a>` : '<span></span>'}
+            ${newer ? `<a href="${detailPath(newer)}" rel="prev">‹ ${esc(newer.title)}</a>` : '<span></span>'}
+            ${older ? `<a href="${detailPath(older)}" rel="next">${esc(older.title)} ›</a>` : '<span></span>'}
         </nav>` : '';
 
         await emit(pathname, renderPage(tpl, {
@@ -287,9 +287,9 @@ async function renderDetails(tpl, indexable) {
                     ],
                 },
             ]),
-            feed: articleHTML(it, { eager: true, lcp: true, heading: 'h1', link: false }),
+            feed: articleHTML(it, { eager: true, lcp: true, heading: 'h1', link: false, detail: true }),
             afterFeed: `${nav}
-        <p class="back-home"><a href="/">← 전체 피드로</a></p>`,
+        <p class="back-home"><a href="/">전체 피드로 ›</a></p>`,
         }));
         paths.push(pathname);
     }

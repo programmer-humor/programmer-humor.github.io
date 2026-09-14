@@ -24,6 +24,7 @@
     let nextPage = Number(container.dataset.nextPage ?? 0);
     let isLoading = false;
     let hasMore = !isStatic;
+    let failed = false;
     let localCache = null;
     // 빌드와 런타임 사이에 새 항목이 끼어들면 페이지 경계가 밀린다 → id 로 중복 제거
     const seen = new Set([...container.querySelectorAll('[data-humor-id]')].map(el => el.dataset.humorId));
@@ -88,6 +89,9 @@
 
     const indicator = document.getElementById('loading-indicator');
     const showLoading = on => { if (indicator) indicator.style.display = on ? 'block' : 'none'; };
+    // 페이지네이션은 크롤러·JS 미동작용 대체 경로. 무한 스크롤이 살아 있으면 숨기고, 로드 실패 시에만 되살린다
+    const paginations = [...document.querySelectorAll('.pagination')];
+    const showPagination = on => paginations.forEach(n => { n.hidden = !on; });
 
     async function loadMore() {
         if (isLoading || !hasMore) return;
@@ -110,9 +114,11 @@
         } catch (err) {
             console.error('피드 로드 실패:', err);
             hasMore = false;
+            failed = true;
+            showPagination(true);
         } finally {
-            if (!hasMore && !container.querySelector('.end-message')) {
-                container.insertAdjacentHTML('beforeend', '<div class="end-message">😀 모든 유머를 읽었습니다.</div>');
+            if (!hasMore && !failed && !container.querySelector('.end-message')) {
+                container.insertAdjacentHTML('beforeend', '<div class="end-message">모든 유머를 읽었습니다.</div>');
             }
             isLoading = false;
             showLoading(false);
@@ -138,6 +144,8 @@
             modal.onclick = e => { if (e.target === modal) closeModal(); };
             document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
         }
+
+        if (!isStatic) showPagination(false);
 
         // 프리렌더된 항목이 하나도 없으면 (템플릿을 그대로 연 경우) 즉시 첫 페이지를 불러온다
         if (!isStatic && seen.size === 0) loadMore();

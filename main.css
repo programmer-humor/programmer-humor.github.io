@@ -1,393 +1,532 @@
+/* insane-design: baemin (2026-09-15) — 배달의민족 design.md 기준 전체 리디자인
+   방향성: 길거리 간판 키치 (극단) · 시그니처: 민트 간판 헤더 · 모션: 배민 표준(hover/active만) */
+
+/* ── 폰트 ──────────────────────────────────────────── */
+/* BM DOHYEON — SIL OFL 1.1. 헤드라인 전용, 15px 이하 사용 금지 */
+@font-face {
+    font-family: 'BM DOHYEON';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMDOHYEON.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ── 토큰 (design.md frontmatter 그대로) ─────────────── */
+:root {
+    /* brand */
+    --primary: oklch(0.88 0.18 178);
+    --primary-hover: oklch(0.69 0.13 184);
+    --primary-tint: oklch(0.97 0.05 178);
+    --mint-700: oklch(0.55 0.10 188);
+    --red: oklch(0.63 0.24 27);
+
+    /* neutrals — 순백·순흑 회피, 본화이트 디폴트 */
+    --bg-page: oklch(0.97 0.00 286);
+    --bg-surface: oklch(1.00 0 0);
+    --bg-subtle: oklch(0.96 0.00 286);
+    --bg-pressed: oklch(0.94 0.00 286);
+    --bg-inverse: oklch(0.18 0 0);
+    --fg-1: oklch(0.18 0 0);
+    --fg-2: oklch(0.34 0 0);
+    --fg-3: oklch(0.55 0 0);
+    --fg-4: oklch(0.71 0 0);
+    --border-1: oklch(0.94 0.00 286);
+    --border-2: oklch(0.87 0.00 286);
+    --border-strong: oklch(0.18 0 0);
+
+    /* type */
+    --font-display: 'BM DOHYEON', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+    --font-body: 'Pretendard Variable', Pretendard, -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', Roboto, sans-serif;
+
+    /* spacing 4px base */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-7: 32px;
+    --space-8: 40px;
+    --space-9: 48px;
+
+    /* rounded */
+    --r-xs: 4px;
+    --r-sm: 8px;
+    --r-md: 12px;
+    --r-lg: 16px;
+    --r-xl: 20px;
+    --r-pill: 9999px;
+
+    /* elevation — 4~8% 만. sticker 는 시그니처 자리에만 */
+    --shadow-1: 0 1px 2px oklch(0.18 0 0 / 0.04);
+    --shadow-2: 0 4px 12px oklch(0.18 0 0 / 0.06);
+    --shadow-3: 0 8px 24px oklch(0.18 0 0 / 0.08);
+    --shadow-sticker: 0 6px 0 oklch(0.18 0 0);
+
+    /* motion — 짧고 차분하게. spring 없음 */
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --dur-fast: 120ms;
+    --dur-base: 200ms;
+
+    /* Swiper 테마 변수 */
+    --swiper-theme-color: var(--fg-1);
+    --swiper-navigation-size: 18px;
+}
+
+/* ── 베이스 ────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #121212;
-    color: #e0e0e0;
     margin: 0;
     padding: 0;
+    background-color: var(--bg-page);
+    color: var(--fg-1);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
 }
+
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: color var(--dur-base) var(--ease-out), background-color var(--dur-base) var(--ease-out);
+}
+
 .container {
     max-width: 600px;
     margin: 0 auto;
-    padding: 20px;
+    padding: var(--space-5);
 }
-.header {
-    text-align: center;
-    margin-bottom: 20px;
+
+/* ── 헤더: 민트 간판 (시그니처) ─────────────────────── */
+.main-header {
+    background-color: var(--primary);
+    color: var(--fg-1);
 }
+
+.main-header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 88px;
+    padding-top: var(--space-6);
+    padding-bottom: var(--space-6);
+}
+
+.main-header .site-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+}
+
+.main-header .site-title a {
+    color: var(--fg-1);
+    display: inline-block;
+    transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.main-header .site-title a:active {
+    transform: scale(0.98);
+}
+
+/* ── 피드 카드: 보더 없는 흰 표면 ────────────────────── */
 .feed-item {
-    background-color: #1e1e1e;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(255, 255, 255, 0.1);
-    margin-bottom: 20px;
-    overflow: hidden;
-    padding: 20px;
+    background-color: var(--bg-surface);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-2);
+    padding: var(--space-5);
+    margin-bottom: var(--space-6);
 }
 
-.feed-item .title {
-    margin-bottom: 10px;
-    font-size: 1.2em;
-    font-weight: bold;
-}
-
-.feed-item .description {
-    margin-bottom: 15px;
-    line-height: 1.4;
-}
-
-.feed-item img {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 15px;
-}
-
-.feed-item .meta {
-    font-size: 0.9em;
-    color: #666;
-    margin-top: 10px;
+.feed-item h2,
+.feed-item h1 {
+    margin: 0 0 var(--space-2);
+    font-family: var(--font-display);
+    font-weight: 400;
+    color: var(--fg-1);
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    word-break: keep-all; /* 한글 어절 중간 줄바꿈 방지 */
 }
 
 .feed-item h2 {
-    margin-top: 0;
-    color: white;
-}
-.feed-item p {
-    color: #b0b0b0;
+    font-size: 22px;
+    line-height: 1.15;
 }
 
+.feed-item h1 {
+    font-size: 32px;
+    line-height: 1.1;
+    margin-bottom: var(--space-3);
+}
+
+.feed-item h2 a,
+.feed-item h1 a {
+    color: inherit;
+}
+
+.feed-item h2 a:hover {
+    color: var(--mint-700);
+}
+
+.feed-item p {
+    margin: 0 0 var(--space-4);
+    color: var(--fg-2);
+    font-size: 15px;
+    line-height: 1.5;
+    word-break: keep-all;
+}
+
+/* ── 이미지 영역 ──────────────────────────────────── */
 .swiper {
     width: 100%;
-    height: auto; /* 고정 높이 제거 */
-    /* max-height: 500px; 최대 높이 설정 */
-    margin-bottom: 15px;
+    height: auto;
+    min-height: 200px; /* 이미지 로드 전 높이 확보 — CLS 완화 */
+    border-radius: var(--r-md);
+    background-color: var(--bg-subtle);
+    overflow: hidden;
 }
 
 .swiper-slide {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #1e1e1e; /* 배경색 추가 */
+    background-color: var(--bg-subtle);
 }
 
 .swiper-slide img {
+    display: block;
     width: 100%;
     height: 100%;
-    object-fit: contain; /* cover에서 contain으로 변경 */
-    max-height: 500px; /* 최대 높이 설정 */
-    cursor: pointer;
-    transition: opacity 0.3s ease;
+    max-height: 560px;
+    object-fit: contain;
+    cursor: zoom-in;
+    transition: opacity var(--dur-base) var(--ease-out);
 }
 
 .swiper-slide img:hover {
-    opacity: 0.9;
+    opacity: 0.94;
 }
 
-/* Header 스타일 */
-.main-header {
-    background-color: #1e1e1e;
-    padding: 20px 0;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+/* 상세 페이지 — 검정 윤곽선 + 6px 단색 sticker 그림자 (만화 스티커 톤) */
+.feed-item--detail .swiper {
+    border: 2px solid var(--border-strong);
+    box-shadow: var(--shadow-sticker);
+    margin-bottom: var(--space-2);
 }
 
-.main-header .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px; /* 컨테이너의 최대 너비를 늘립니다 */
-    margin: 0 auto; /* 중앙 정렬을 위해 추가 */
-    padding: 0 20px; /* 양쪽에 패딩을 추가합니다 */
-}
-
-.main-header .site-title {
-    margin: 0;
-    font-size: 1.5em;
-    flex-grow: 1; /* 로고가 가능한 많은 공간을 차지하도록 합니다 */
-}
-
-.main-header nav {
-    margin-left: 40px; /* 네비게이션과 로고 사이의 간격을 늘립니다 */
-}
-
-.main-header nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-}
-
-.main-header nav ul li {
-    margin-left: 30px; /* 네비게이션 항목 사이의 간격을 늘립니다 */
-}
-
-.main-header nav ul li a {
-    color: #e0e0e0;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.main-header nav ul li a:hover {
-    color: #ffffff;
-}
-
-/* Footer 스타일 수정 */
-.main-footer {
-    background-color: #1e1e1e;
-    color: #b0b0b0;
-    padding: 20px 0;
-    margin-top: 40px;
-}
-
-.main-footer .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px; /* 헤더와 동일한 최대 너비 설정 */
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.main-footer p {
-    margin: 0;
-    flex-grow: 1; /* 저작권 정보가 가능한 많은 공간을 차지하도록 합니다 */
-}
-
-.social-links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    margin-left: 40px; /* 헤더와 동일한 간격 설정 */
-}
-
-.social-links li {
-    margin-left: 0; /* 기존 마진 제거 */
-}
-
-.social-links a {
-    color: #b0b0b0;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.social-links a:hover {
-    color: #ffffff;
-}
-
-/* 반응형 디자인을 위한 미디어 쿼리 */
-@media (max-width: 600px) {
-    .main-header .container,
-    .main-footer .container {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .main-header nav ul {
-        margin-top: 15px;
-    }
-
-    .main-header nav ul li {
-        margin: 0 10px;
-    }
-
-    .social-links {
-        margin-top: 15px;
-    }
-
-    .social-links li {
-        margin: 0 10px;
-    }
-}
-
-/* 반응형 디자인을 위한 미디어 쿼리 수정 */
-@media (max-width: 768px) {
-    .main-header .container {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .main-header nav {
-        margin-left: 0;
-        margin-top: 15px;
-        width: 100%;
-    }
-
-    .main-header nav ul {
-        justify-content: space-between;
-    }
-
-    .main-header nav ul li {
-        margin-left: 0;
-    }
-
-    .main-footer .container {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .social-links {
-        margin-left: 0;
-        margin-top: 15px;
-        width: 100%;
-    }
-}
-
-.end-message {
-    background-color: #1e1e1e;
-    color: #b0b0b0;
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
-    margin-top: 20px;
-    box-shadow: 0 1px 3px rgba(255, 255, 255, 0.1);
-}
-
-.loading-indicator {
-    text-align: center;
-    padding: 20px;
-    color: #b0b0b0;
-}
-
-.spinner {
-    border: 4px solid #3498db;
-    border-top: 4px solid #1e1e1e;
+/* Swiper 컨트롤 — 검정 원 알약 */
+.swiper-button-next,
+.swiper-button-prev {
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    width: 40px;
+    background-color: var(--bg-surface);
+    color: var(--fg-1);
+    box-shadow: var(--shadow-1);
+    transition: background-color var(--dur-base) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+    background-color: var(--bg-pressed);
+}
+
+.swiper-button-next:active,
+.swiper-button-prev:active {
+    transform: scale(0.96);
+}
+
+.swiper-pagination-bullet {
+    background-color: var(--fg-1);
+    opacity: 0.3;
+}
+
+.swiper-pagination-bullet-active {
+    opacity: 1;
+}
+
+/* ── 태그 칩: 민트 틴트 + mint-700 ───────────────────── */
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0 0 var(--space-5);
+}
+
+.feed-item .tag-list {
+    margin: var(--space-3) 0 0;
+}
+
+.tag-list a {
+    display: inline-flex;
+    align-items: center;
+    height: 22px;
+    padding: 0 10px;
+    border-radius: var(--r-pill);
+    background-color: var(--primary-tint);
+    color: var(--mint-700);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.tag-list a:hover {
+    background-color: var(--primary);
+    color: var(--fg-1);
+}
+
+/* ── 알약 버튼 (공통) ────────────────────────────────── */
+.pagination a,
+.pagination span,
+.detail-nav a,
+.back-home a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     height: 40px;
-    animation: spin 1s linear infinite;
-    margin: 0 auto 10px;
+    padding: 0 var(--space-4);
+    border-radius: var(--r-pill);
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out), transform var(--dur-fast) var(--ease-out);
 }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+/* ghost: 투명 + 1.5px 보더 */
+.pagination a,
+.detail-nav a,
+.back-home a {
+    background-color: transparent;
+    border: 1.5px solid var(--border-2);
+    color: var(--fg-1);
 }
 
-/* 모달 스타일 */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
-    overflow: auto;
+.pagination a:hover,
+.detail-nav a:hover,
+.back-home a:hover {
+    border-color: var(--border-strong);
 }
 
-.modal-content {
-    margin: auto;
-    display: block;
-    max-width: 90%;
-    max-height: 90vh;
-    object-fit: contain;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.pagination a:active,
+.detail-nav a:active,
+.back-home a:active {
+    transform: scale(0.98);
 }
 
-.modal-close {
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    color: #f1f1f1;
-    font-size: 40px;
-    font-weight: bold;
-    cursor: pointer;
-    z-index: 1001;
-}
-/* ── SEO 개편 (2026-09) ─────────────────────────────── */
-.main-header .site-title {
-    font-weight: bold;
-}
-.main-header .site-title a {
-    color: inherit;
-    text-decoration: none;
-}
-.feed-item h1 {
-    margin-top: 0;
-    color: white;
-    font-size: 1.4em;
-}
-.feed-item h2 a,
-.feed-item h1 a {
-    color: inherit;
-    text-decoration: none;
-}
-.feed-item h2 a:hover {
-    text-decoration: underline;
-}
-/* 이미지 로드 전 높이를 확보해 CLS 를 줄인다 (원본 크기를 알 수 없어 min-height 로 대체) */
-.swiper {
-    min-height: 200px;
-}
-
+/* ── 페이지네이션 ─────────────────────────────────── */
 .pagination {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 8px;
-    margin: 24px 0;
-}
-.pagination a,
-.pagination span {
-    padding: 8px 12px;
-    border-radius: 6px;
-    background-color: #1e1e1e;
-    color: #e0e0e0;
-    text-decoration: none;
-}
-.pagination a:hover {
-    color: #ffffff;
-    background-color: #2a2a2a;
-}
-.pagination .current {
-    background-color: #3498db;
-    color: #ffffff;
-}
-.pagination .gap {
-    background: none;
-    color: #666;
+    gap: var(--space-2);
+    margin: var(--space-7) 0 var(--space-4);
 }
 
+.pagination .current {
+    background-color: var(--fg-1);
+    color: var(--bg-surface);
+    border: 1.5px solid var(--fg-1);
+}
+
+.pagination .gap {
+    height: auto;
+    padding: 0 var(--space-1);
+    color: var(--fg-4);
+    background: none;
+}
+
+/* ── 상세 이전/다음 ───────────────────────────────── */
 .detail-nav {
     display: flex;
     justify-content: space-between;
-    gap: 12px;
-    margin: 24px 0 8px;
+    gap: var(--space-3);
+    margin: var(--space-7) 0 var(--space-3);
 }
+
 .detail-nav a {
-    color: #b0b0b0;
-    text-decoration: none;
     max-width: 48%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-}
-.detail-nav a:hover {
-    color: #ffffff;
-}
-.back-home a {
-    color: #b0b0b0;
+    justify-content: flex-start;
 }
 
-.tag-list {
+.detail-nav span {
+    flex: 1;
+}
+
+.back-home {
+    margin: 0 0 var(--space-4);
+    text-align: center;
+}
+
+.back-home a {
+    color: var(--fg-2);
+}
+
+/* ── 안내: 끝 / 로딩 ─────────────────────────────── */
+.end-message {
+    padding: var(--space-6) 0;
+    text-align: center;
+    color: var(--fg-3);
+    font-size: 13px;
+}
+
+.loading-indicator {
+    text-align: center;
+    padding: var(--space-5);
+    color: var(--fg-3);
+    font-size: 13px;
+}
+
+.loading-indicator p {
+    margin: 0;
+}
+
+.spinner {
+    width: 32px;
+    height: 32px;
+    margin: 0 auto var(--space-2);
+    border: 3px solid var(--primary);
+    border-top-color: var(--fg-1);
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ── 모달 ────────────────────────────────────────── */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    background-color: oklch(0.18 0 0 / 0.92);
+    overflow: auto;
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: block;
+    max-width: 92%;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: var(--r-md);
+}
+
+.modal-close {
+    position: absolute;
+    right: var(--space-5);
+    top: var(--space-4);
+    z-index: 1001;
+    width: 40px;
+    height: 40px;
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 0 0 20px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: var(--bg-surface);
+    color: var(--fg-1);
+    font-size: 26px;
+    line-height: 1;
+    cursor: pointer;
+    transition: transform var(--dur-fast) var(--ease-out);
 }
-.feed-item .tag-list {
-    margin: 12px 0 0;
+
+.modal-close:active {
+    transform: scale(0.96);
 }
-.tag-list a {
-    background-color: #1e1e1e;
-    color: #b0b0b0;
-    padding: 4px 10px;
-    border-radius: 999px;
-    text-decoration: none;
-    font-size: 0.9em;
+
+/* ── 푸터 ────────────────────────────────────────── */
+.main-footer {
+    margin-top: var(--space-8);
+    border-top: 1px solid var(--border-1);
+    color: var(--fg-3);
+    font-size: 12px;
+    line-height: 1.4;
 }
-.tag-list a:hover {
-    color: #ffffff;
+
+.main-footer .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: var(--space-6);
+    padding-bottom: var(--space-6);
+}
+
+.main-footer p {
+    margin: 0;
+}
+
+.social-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: var(--space-3);
+}
+
+.social-links a {
+    color: var(--fg-2);
+    font-weight: 600;
+}
+
+.social-links a:hover {
+    color: var(--fg-1);
+}
+
+/* ── 반응형 ──────────────────────────────────────── */
+@media (max-width: 480px) {
+    .container {
+        padding: var(--space-4);
+    }
+
+    .main-header .container {
+        min-height: 72px;
+        padding-top: var(--space-5);
+        padding-bottom: var(--space-5);
+    }
+
+    .main-header .site-title {
+        font-size: 26px;
+    }
+
+    .feed-item {
+        padding: var(--space-4);
+        border-radius: var(--r-md);
+    }
+
+    .feed-item h2 {
+        font-size: 20px;
+    }
+
+    .feed-item h1 {
+        font-size: 28px;
+    }
+
+    .detail-nav a {
+        max-width: 100%;
+    }
+
+    .detail-nav {
+        flex-direction: column;
+    }
 }
