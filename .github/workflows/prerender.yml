@@ -1,0 +1,43 @@
+# API → 정적 HTML 프리렌더 → GitHub Pages 배포
+# 저장소 Settings → Pages → Source 를 "GitHub Actions" 로 바꿔야 이 워크플로가 서빙된다.
+name: Prerender & Deploy
+
+on:
+  push:
+    branches: [dev/init, main]
+  schedule:
+    - cron: '0 18 * * *'   # 매일 KST 03:00 — API 에 새로 등록된 유머 반영
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Prerender
+        run: node scripts/prerender.mjs
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
